@@ -3,8 +3,7 @@
 #include <thread>         // std::thread, std::this_thread::yield
 #include <vector>         // std::vector
 #include <chrono>
-// #include<unistd.h>
-// unsigned int microsecond = 10000;
+
 using namespace std::this_thread; // sleep_for, sleep_until
 using namespace std::chrono; // nanoseconds, system_clock, seconds
 
@@ -17,14 +16,13 @@ bool running = true;
 
 void read (int * a) {
 	while(running){
-	// for(int i = 1; i<10;i++){
 		if (NewFrame.load()){
 			int temp = available;
 			available = read_loc;
 			read_loc = temp;
 			std::cout << *(a + read_loc) << std::endl; 
 			NewFrame = false;
-			sleep_for(milliseconds(1));
+			sleep_for(milliseconds(1));  //This is an artificial delay 
 
 		}
 		else{
@@ -40,20 +38,17 @@ void write (int * a) {
 		write_loc = temp;	
 		*(a + write_loc) = i ; 
 		NewFrame = true;
-		sleep_for(microseconds(1500));
-		// usleep(1 * microsecond);
+		sleep_for(microseconds(1500));  //This is an artificial delay
 	}
 	running = false;
 };
 
 int main ()
 {
-int a[3];
+int a[3];  // The shared cells
 std::thread t1(write, a);
 std::thread t2(read, a);
 t1.join();
 t2.join();
-
-
   return 0;
 }
