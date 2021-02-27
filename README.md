@@ -6,6 +6,7 @@ This code shows an example where the write thread write on the shared location a
 There are two verison of the same code:
 
 -- sync.cpp uses global atomic variables
+
 -- sync_ref.cpp uses references to the atomic varibales
 
 
